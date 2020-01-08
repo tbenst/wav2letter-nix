@@ -4,7 +4,7 @@ with stdenv.lib;
 
 stdenv.mkDerivation rec {
   pname = "wav2letter";
-  name = "${name}${version}";
+  name = "${pname}${version}";
   version = "304b62d1f9c4d0c22eec3c4ae1e2689b441f4331";
   src = fetchFromGitHub {
     owner = "facebookresearch";
@@ -17,7 +17,7 @@ stdenv.mkDerivation rec {
   buildInputs = [ arrayfire glog gflags mkl libsndfile flashlight fftw fftwSinglePrec libogg libvorbis flac kenlm lzma];
 
   preConfigure = ''
-    cmakeFlags+="-DCRITERION_BACKEND=CPU -DBUILD_TESTS=OFF"
+    cmakeFlags+="-DCRITERION_BACKEND=CPU -DBUILD_TESTS=OFF -DUSE_CPU_MKL=ON"
     MKLROOT=${mkl}
   '';
 

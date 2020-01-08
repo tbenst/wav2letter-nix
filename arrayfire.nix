@@ -1,4 +1,4 @@
-{ stdenv, fetchurl, cmake, fftw, liblapack, blas, openblas, pkgconfig, fftwSinglePrec, boost}:
+{ stdenv, fetchurl, cmake, fftw, liblapack, blas, openblas, pkgconfig, fftwSinglePrec, boost, mkl}:
 
 with stdenv.lib;
 
@@ -14,7 +14,12 @@ stdenv.mkDerivation rec {
   nativeBuildInputs = [ cmake pkgconfig ];
   buildInputs = [ fftw liblapack blas fftwSinglePrec boost];
 
-  preConfigure = "cmakeFlags+=\"-DBUILD_TESTING=OFF -DAF_BUILD_EXAMPLES=OFF\"";
+  preConfigure = ''
+    cmakeFlags+="-DBUILD_TESTING=OFF -DAF_BUILD_EXAMPLES=OFF"
+    MKL_INCLUDE_DIR=${mkl}/include
+    MKL_Core_LINK_LIBRARY=${mkl}/lib
+
+  '';
 
   meta = {
     description = "ArrayFire: a general purpose GPU library.";
