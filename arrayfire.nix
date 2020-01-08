@@ -15,10 +15,13 @@ stdenv.mkDerivation rec {
   buildInputs = [ fftw liblapack blas fftwSinglePrec boost];
 
   preConfigure = ''
-    cmakeFlags+="-DBUILD_TESTING=OFF -DAF_BUILD_EXAMPLES=OFF"
-    MKL_INCLUDE_DIR=${mkl}/include
-    MKL_Core_LINK_LIBRARY=${mkl}/lib
-
+    cmakeFlags+="-DBUILD_TESTING=OFF -DAF_BUILD_EXAMPLES=OFF \
+    -DMKL_INCLUDE_DIR=${mkl}/include \
+    -DDUSE_OPENCL_MKL=ON \
+    -DUSE_CPU_MKL=ON \
+    -DMKL_Core_LINK_LIBRARY=${mkl}/lib"
+    LD_LIBRARY_PATH=$LD_LIBRARY_PATH:${mkl}/lib
+    MKL_ThreadingLibrary_LINK_LIBRARY:"${mkl}/lib/libiomp5.so"
   '';
 
   meta = {
