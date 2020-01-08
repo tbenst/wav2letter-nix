@@ -1,4 +1,4 @@
-{ stdenv, fetchurl, cmake, arrayfire, mkl, glog, gflags, mkl-dnn, openmpi, git
+{ stdenv, fetchurl, cmake, arrayfire, mkl, glog, gflags, openmpi, git
 , cereal, gloo}:
 
 with stdenv.lib;
@@ -13,7 +13,7 @@ stdenv.mkDerivation rec {
   };
 
   nativeBuildInputs = [ cmake ];
-  buildInputs = [ arrayfire glog gflags mkl mkl-dnn openmpi git gloo cereal ];
+  buildInputs = [ arrayfire glog gflags mkl openmpi git gloo cereal ];
 
   preConfigure = ''
     cmakeFlags+="-DFLASHLIGHT_BACKEND=CPU -DFL_BUILD_TESTS=OFF -DFL_BUILD_EXAMPLES=OFF"

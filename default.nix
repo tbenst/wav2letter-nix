@@ -1,16 +1,16 @@
 let
   nixpkgs = import ./nixpkgs.nix {
-    config = {
-      allowUnfreePredicate = pkg: builtins.elem (pkg.name) [
-        "mkl-2019.0.117"
+    config = with nixpkgs.stdenv; {
+      whitelistedLicenses = with lib.licenses; [
+        issl
       ];
     };
   };
   callPackage = nixpkgs.lib.callPackageWith (nixpkgs // pkgs);
   pkgs = {
     arrayfire = callPackage ./arrayfire.nix { };
-    mkl = callPackage ./mkl.nix { };
-    mkl-dnn = callPackage ./mkl-dnn.nix { };
+    # mkl = callPackage ./mkl.nix { };
+    # mkl-dnn = callPackage ./mkl-dnn.nix { };
     flashlight = callPackage ./flashlight.nix { };
     kenlm = callPackage ./kenlm.nix { };
     gloo = callPackage ./gloo.nix { };

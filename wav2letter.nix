@@ -3,7 +3,8 @@
 with stdenv.lib;
 
 stdenv.mkDerivation rec {
-  name = "wav2letter${version}";
+  pname = "wav2letter";
+  name = "${name}${version}";
   version = "304b62d1f9c4d0c22eec3c4ae1e2689b441f4331";
   src = fetchFromGitHub {
     owner = "facebookresearch";
