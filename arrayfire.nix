@@ -4,25 +4,25 @@ with stdenv.lib;
 
 stdenv.mkDerivation rec {
   name = "arrayfire${version}";
-  version = "3.6.1";
+  version = "3.6.4";
 
   src = fetchurl {
-    url = "https://arrayfire.s3.amazonaws.com/arrayfire_source/arrayfire-full-3.6.1.tar.bz2";
-    sha256 = "156d4a6y3sd03raca9wk1bdwib3h4b33plh13r3dc5wpwd9h3gz3";
+    url = "https://arrayfire.s3.amazonaws.com/arrayfire_source/arrayfire-full-3.6.4.tar.bz2";
+    sha256 = "1fin7a9rliyqic3z83agkpb8zlq663q6gdxsnm156cs8s7f7rc9h";
   };
 
   nativeBuildInputs = [ cmake pkgconfig ];
-  buildInputs = [ fftw liblapack blas fftwSinglePrec boost];
+  buildInputs = [ fftw liblapack blas fftwSinglePrec boost mkl ];
 
-  preConfigure = ''
-    cmakeFlags+="-DBUILD_TESTING=OFF -DAF_BUILD_EXAMPLES=OFF \
-    -DMKL_INCLUDE_DIR=${mkl}/include \
-    -DDUSE_OPENCL_MKL=ON \
-    -DUSE_CPU_MKL=ON \
-    -DMKL_Core_LINK_LIBRARY=${mkl}/lib"
-    LD_LIBRARY_PATH=$LD_LIBRARY_PATH:${mkl}/lib
-    MKL_ThreadingLibrary_LINK_LIBRARY:"${mkl}/lib/libiomp5.so"
-  '';
+
+  cmakeFlags = [
+    "-DBUILD_TESTING=OFF"
+    "-DAF_BUILD_EXAMPLES=OFF"
+    "-DDUSE_OPENCL_MKL=ON"
+    "-DUSE_CPU_MKL=ON"
+  ];
+
+  MKLROOT=mkl;
 
   meta = {
     description = "ArrayFire: a general purpose GPU library.";
