@@ -1,28 +1,31 @@
-{ stdenv, fetchurl, cmake, arrayfire, mkl, glog, gflags, openmpi, git
+{ stdenv, fetchurl, cmake, arrayfire, mkl, mkl-dnn, glog, gflags, openmpi, git
 , cereal, gloo}:
 
 with stdenv.lib;
 
 stdenv.mkDerivation rec {
   name = "flashlight-${version}";
-  version = "349e8cfa261a70dd30ab336c44c6985b45555141";
+  version = "857cf54f83dbc66f57a7465325edb884d490312f";
+  # version = "349e8cfa261a70dd30ab336c44c6985b45555141";
 
   src = fetchurl {
     url = "https://github.com/facebookresearch/flashlight/archive/${version}.tar.gz";
-    sha256 = "0pr8mykqqy9gks6wvca9k4wix0kz2rxqblhzpn7arvs1givpcscn";
+    sha256 = "1vnch9zvmqxzp60gn2wb21qhb59f2fp7z60bzv0xaa86xrk076aj";
+    # sha256 = "0pr8mykqqy9gks6wvca9k4wix0kz2rxqblhzpn7arvs1givpcscn";
   };
 
   nativeBuildInputs = [ cmake ];
-  buildInputs = [ arrayfire glog gflags mkl openmpi git gloo cereal ];
+  buildInputs = [ arrayfire glog gflags mkl mkl-dnn openmpi git gloo cereal ];
 
-  preConfigure = ''
-    cmakeFlags+="-DFLASHLIGHT_BACKEND=CPU -DFL_BUILD_TESTS=OFF -DFL_BUILD_EXAMPLES=OFF"
-    MKLROOT=${mkl}
+  cmakeFlags = [
+    "-DFLASHLIGHT_BACKEND=CPU"
+    "-DFL_BUILD_TESTS=OFF"
+    "-DFL_BUILD_EXAMPLES=OFF"
+  ];
 
-    # They want to clone dependencies :(
-    GIT_SSL_CAINFO=/etc/ssl/certs/ca-certificates.crt
-    SSL_CERT_FILE=/etc/ssl/certs/ca-certificates.crt
-  '';
+  MKLROOT=mkl;
+  MKLDNN_ROOT=mkl-dnn;
+  CEREAL_ROOT=cereal;
 
   meta = {
     description = "A C++ standalone library for machine learning";

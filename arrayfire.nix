@@ -23,6 +23,7 @@ stdenv.mkDerivation rec {
   ];
 
   MKLROOT=mkl;
+  MKLDNN_ROOT="${mkl}/include";
 
   meta = {
     description = "ArrayFire: a general purpose GPU library.";

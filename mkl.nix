@@ -20,7 +20,7 @@ LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
 OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
-{ stdenvNoCC, writeText, fetchurl, rpmextract, undmg }:
+{ stdenvNoCC, stdenv, writeText, fetchurl, rpmextract, undmg }:
 /*
   For details on using mkl as a blas provider for python packages such as numpy,
   numexpr, scipy, etc., see the Python section of the NixPkgs manual.
@@ -85,7 +85,7 @@ stdenvNoCC.mkDerivation rec {
     then "00d49ls9vcjan1ngq2wx2q4p6lnm05zwh67hsmj7bnq43ykrfibw"
     else "1amagcaan0hk3x9v7gg03gkw02n066v4kmjb32yyzsy5rfrivb1a";
 
-  meta = with stdenvNoCC.lib; {
+  meta = with stdenv.lib; {
     description = "Intel Math Kernel Library";
     longDescription = ''
       Intel Math Kernel Library (Intel MKL) optimizes code with minimal effort
@@ -94,11 +94,7 @@ stdenvNoCC.mkDerivation rec {
       threading models.
     '';
     homepage = https://software.intel.com/en-us/mkl;
-    license = {
-      fullName = "Intel Simplified Software License";
-      url = https://software.intel.com/en-us/license/intel-simplified-software-license;
-      free = false;
-    };
+    license = licenses.issl;
     platforms = [ "x86_64-linux" "x86_64-darwin" ];
     maintainers = [ maintainers.bhipple ];
   };
