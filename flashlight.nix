@@ -5,13 +5,11 @@ with stdenv.lib;
 
 stdenv.mkDerivation rec {
   name = "flashlight-${version}";
-  version = "857cf54f83dbc66f57a7465325edb884d490312f";
-  # version = "349e8cfa261a70dd30ab336c44c6985b45555141";
+  version = "cd535bf887ca1763f30e9a7c2480c48a8abe25e5";
 
   src = fetchurl {
     url = "https://github.com/facebookresearch/flashlight/archive/${version}.tar.gz";
-    sha256 = "1vnch9zvmqxzp60gn2wb21qhb59f2fp7z60bzv0xaa86xrk076aj";
-    # sha256 = "0pr8mykqqy9gks6wvca9k4wix0kz2rxqblhzpn7arvs1givpcscn";
+    sha256 = "1576511vmds98vwvi43i5954898y488nlbfg88v63a0i8f5zdcqj";
   };
 
   nativeBuildInputs = [ cmake ];
@@ -21,11 +19,12 @@ stdenv.mkDerivation rec {
     "-DFLASHLIGHT_BACKEND=CPU"
     "-DFL_BUILD_TESTS=OFF"
     "-DFL_BUILD_EXAMPLES=OFF"
+    "-DFL_BUILD_EXAMPLES=OFF"
   ];
 
   MKLROOT=mkl;
   MKLDNN_ROOT=mkl-dnn;
-  CEREAL_ROOT=cereal;
+  CEREAL_ROOT_DIR="${cereal}/include/cereal";
 
   meta = {
     description = "A C++ standalone library for machine learning";
